@@ -27,7 +27,7 @@
 "name": "nginx",
 "image": "iaurimas/multi-nginx",
 "hostname": "nginx",
-"essential": false
+"essential": true
 }
 
 

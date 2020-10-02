@@ -29,7 +29,7 @@ FROM nginx
 #Expose port 80 once deployed to elasticbeanstalk, this will not work localy!!!!!!!
 EXPOSE 3000
 
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 # copy build folder from build process executed above
 
 COPY --from=0 /app/build /usr/share/nginx/html
