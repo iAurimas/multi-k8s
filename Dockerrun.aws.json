@@ -1,0 +1,34 @@
+{
+  "AWSEBDockerrunVersion": "2", #what syntax we are using in this file
+  "containerdefinitions": [
+
+{
+"name": "client",
+"image": "iaurimas/multi-client",
+"hostname": "client",
+"essential": false
+}
+
+{
+"name": "server",
+"image": "iaurimas/multi-server",
+"hostname": "api",
+"essential": false
+}
+
+{
+"name": "worker",
+"image": "iaurimas/multi-worker",
+"hostname": "worker",
+"essential": false
+}
+
+{
+"name": "nginx",
+"image": "iaurimas/multi-nginx",
+"hostname": "nginx",
+"essential": false
+}
+
+
+]
