@@ -30,3 +30,17 @@ after_success:
   - docker push iaurimas/multi-nginx
   - docker push iaurimas/multi-server
   - docker push iaurimas/multi-worker
+
+
+deploy:
+  provider: elastikbeanstalk
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  region: "eu-north-1"
+  app: "multi-docker"
+  env: "MultiDocker-env"
+
+  #S3 bucket and initial app folder
+  bucket_name: "elasticbeanstalk-eu-north-1-860177140429"
+  bucket_path: "multi-docker"
+#Deploy code only when pushed to master
