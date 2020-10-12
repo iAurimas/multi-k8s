@@ -42,7 +42,7 @@ services:
       dockerfile: Dockerfile.dev
       context: ./worker
     volumes:
-          - /app/node_modules  # telling not to map node_modules
+          - /app/node_modules  # telling not to map node_modulesa
           - ./worker:/app
     environment:
     - REDIS_HOST=redis
