@@ -1,46 +1,36 @@
-language: generic
-#Super user level permision to execute build
 sudo: required
-#we need a copy of docker ready to run
+language: generic
+
 services:
   - docker
 
-
 before_install:
-  - docker build -t iaurimas/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t stephengrider/react-test -f ./client/Dockerfile.dev ./client
 
-
-#https://facebook.github.io/create-react-app/docs/running-tests#linux-macos-bash
-#https://docs.docker.com/engine/reference/run/#env-environment-variables
 script:
-  - docker run -e CI=true iaurimas/react-test npm run test
-#build production images
+  - docker run stephengrider/react-test npm test -- --coverage
+
 after_success:
-  - docker build -t iaurimas/multi-client ./client
-  - docker build -t iaurimas/multi-nginx ./nginx
-  - docker build -t iaurimas/multi-server ./server
-  - docker build -t iaurimas/multi-worker ./worker
-#Allow travis to Login to docker cli
-
+  - docker build -t stephengrider/multi-client ./client
+  - docker build -t stephengrider/multi-nginx ./nginx
+  - docker build -t stephengrider/multi-server ./server
+  - docker build -t stephengrider/multi-worker ./worker
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-#Take those images and push to Dockerhub
-
-  - docker push iaurimas/multi-client
-  - docker push iaurimas/multi-nginx
-  - docker push iaurimas/multi-server
-  - docker push iaurimas/multi-worker
-
+  # Take those images and push them to docker hub
+  - docker push stephengrider/multi-client
+  - docker push stephengrider/multi-nginx
+  - docker push stephengrider/multi-server
+  - docker push stephengrider/multi-worker
 
 deploy:
-  provider: elastikbeanstalk
+  provider: elasticbeanstalk
+  region: 'us-east-1'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
-  region: "eu-north-1"
-  app: "MultiDocker-env"
-  env: "MultidockerEnv-env"
-
-  #S3 bucket and initial app folder
-  bucket_name: "elasticbeanstalk-eu-north-1-860177140429"
-  bucket_path: "MultidockerEnv-env"
-#Deploy code only when pushed to master
