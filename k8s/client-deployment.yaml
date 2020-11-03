@@ -1,0 +1,19 @@
+apiVersion: apps/v1   # Kubernetis API version to use
+kind: Deployment  #Kuberenetis Object type
+metadata:           #Metadata describes the deployment itself. Data that helps uniquely identify the object, including a name string, UID, and optional namespace
+  name: client-deployment
+spec:   #What state you desire for the object
+  replicas: 3  # Number of desired pods. This is a pointer to distinguish between explicit zero and not specified. Defaults to 1.
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: stephengrider/multi-client
+          ports:
+            - containerPort: 3000
